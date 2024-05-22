@@ -1,79 +1,66 @@
-import React, { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Form, Alert } from "react-bootstrap";
-import { Button } from "react-bootstrap";
-import GoogleButton from "react-google-button";
-import { useUserAuth } from "../context/UserAuthContext";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+import AuthContext from "../store/auth-context";
+import loginimg from "../assets/images/security.png";
+import "../assets/css/loader.css";
 
 const Login = () => {
+  const authCtx = useContext(AuthContext);
+  const Navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const { logIn, googleSignIn } = useUserAuth();
-  const navigate = useNavigate();
+  const [pass, setPass] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ status: false, body: "" });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    try {
-      await logIn(email, password);
-      navigate("/home");
-    } catch (err) {
-      setError(err.message);
-    }
+  const emailChangeHandler = (event) => {
+    setEmail(event.target.value);
   };
 
-  const handleGoogleSignIn = async (e) => {
+  const passChangeHandler = (event) => {
+    setPass(event.target.value);
+  };
+
+  const loginHandler = (e) => {
     e.preventDefault();
-    try {
-      await googleSignIn();
-      navigate("/home");
-    } catch (error) {
-      console.log(error.message);
-    }
+    setLoading(true);
+
+    signInWithEmailAndPassword(auth, email, pass)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        console.log(user);
+        authCtx.login(user.uid); // Adjust according to how you handle login context
+        Navigate("/dashboard");
+        setLoading(false);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        setError({ status: true, body: errorMessage });
+        setLoading(false);
+      });
   };
 
   return (
-    <>
-      <div className="p-4 box">
-        <h2 className="mb-3">Firebase Auth Login</h2>
-        {error && <Alert variant="danger">{error}</Alert>}
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Control
-              type="email"
-              placeholder="Email address"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
-
-          <div className="d-grid gap-2">
-            <Button variant="primary" type="Submit">
-              Log In
-            </Button>
-          </div>
-        </Form>
-        <hr />
-        <div>
-          <GoogleButton
-            className="g-btn"
-            type="dark"
-            onClick={handleGoogleSignIn}
-          />
-        </div>
+    <div className="login">
+      <div className="form-wrapper">
+        <form>
+          <h1>Login to Med Block</h1>
+          <p>New User? <Link to="/register">Register Here</Link></p>
+          <label>Email</label>
+          <input type="email" required onChange={emailChangeHandler} value={email}/>
+          <label>Password</label>
+          <input type="password" required onChange={passChangeHandler} value={pass}/>
+          {error.status ? <span className="reqmsg">{error.body}</span> : null}
+          <button type="submit" className="registerBtn" onClick={loginHandler}>Login</button>
+          {loading ? <div className="lds-ring"><div></div><div></div><div></div><div></div></div> : null}
+        </form>
       </div>
-      <div className="p-4 box mt-3 text-center">
-        Don't have an account? <Link to="/signup">Sign up</Link>
-      </div>
-    </>
+      <img className="form-img" src={loginimg} alt="Login"/>
+    </div>
   );
 };
 

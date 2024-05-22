@@ -1,29 +1,44 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
-import Home from "./components/Home";
+
 import Login from "./components/Login";
-import Signup from "./components/Signup";
+import Dashboard from "./components/Dashboard";
+import Register from "./components/Register";
+import PhoneSignUp from "./components/PhoneSignUp";
+import ProfileForm from './components/ProfileForm';
 import ProtectedRoute from "./components/ProtectedRoute";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
+import LandingPage from "./components/LandingPage";
 
 function App() {
   return (
-    <Container style={{ width: "400px" }}>
+    <Container >
       <Row>
         <Col>
           <UserAuthContextProvider>
             <Routes>
               <Route
-                path="/home"
+                path="/dashboard"
                 element={
                   <ProtectedRoute>
-                    <Home />
+                    < Dashboard/>
                   </ProtectedRoute>
                 }
               />
-              <Route path="/" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
+               <Route
+                path="/profile-form"
+                element={
+                  <ProtectedRoute>
+                    < ProfileForm/>
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/phonesignup" element={<PhoneSignUp />} />
+              
             </Routes>
           </UserAuthContextProvider>
         </Col>

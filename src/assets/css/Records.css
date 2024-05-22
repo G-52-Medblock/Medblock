@@ -1,0 +1,50 @@
+
+.records 
+{
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.recordlist
+{
+    width: auto;
+    justify-self: center;
+    display: grid;
+    grid-gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+    margin: 50px 5%;
+}
+
+
+.record
+{
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: var(--purple-light);
+    border-radius: 8px;
+    min-height: 100px;
+}
+.record:hover
+{
+    background-color: var(--purple-dark);
+    color: white;
+}
+.record:hover> .docicon
+{
+    stroke: white;
+    fill: white;
+    color: white;
+}
+
+.docicon
+{
+    transform: scale(2.5);
+}
+
+.filename
+{
+    margin-bottom: 0;
+}

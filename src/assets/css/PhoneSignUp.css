@@ -1,0 +1,47 @@
+.p-4.box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.p-4.box h2 {
+    font-size: 2rem; /* Adjust font size as needed */
+    margin-bottom: 20px; /* Add some space below the heading */
+    white-space: nowrap; /* Prevent line break */
+    text-align: center;
+    width: auto; /* Hide overflow text */
+    text-overflow: ellipsis; /* Show ellipsis for overflow text */
+}
+
+.button-right {
+    display: flex;
+    justify-content: center; /* Center the buttons */
+}
+
+.button-right button {
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500; /* Add space between buttons */
+}
+.button-right button:hover{
+    background-color: black;
+    color: white;
+}
+.header img
+{
+    height: 2rem;
+    align-items:center;
+    margin: 0 20px 10px;
+
+}
+
+.title
+{
+    font-size: 4.5rem;
+    width: 100%;
+    margin-bottom: 20px;
+    align-items: center;
+}
