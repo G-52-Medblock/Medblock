@@ -15,6 +15,34 @@ const Dashboard = () => {
         setFile(event.target.files[0]);
     };
 
+    const handleFileUpload = async () => {
+        if (!file) {
+            alert("No file selected");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            const response = await fetch("http://localhost:5000/upload", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error("File upload failed");
+            }
+
+            const data = await response.json();
+            console.log("File uploaded successfully", data);
+            alert("File uploaded successfully");
+        } catch (error) {
+            console.error("Error uploading file:", error);
+            alert("Error uploading file");
+        }
+    };
+
     return (
         <div className="dashboard">
             <div className="nav">
@@ -38,7 +66,9 @@ const Dashboard = () => {
                             <label htmlFor="file-input" className="file-input-label">
                                 Choose File
                             </label>
+                            <br></br>
                             {file && <p>Selected file: {file.name}</p>}
+                            <button className="file-input-label" onClick={handleFileUpload}>Upload File</button>
                         </div>
                     )}
                 </div>

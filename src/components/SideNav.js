@@ -38,7 +38,7 @@ const SideNav = (props) => {
         </h4>
       </a>
       
-      <h4 onClick={() => {
+      {/* <h4 onClick={() => {
           props.setCurrentTab(1);
           navigate('/dashboard');
         }}
@@ -63,7 +63,7 @@ const SideNav = (props) => {
         className={props.currentTab === 3 ? 'active' : ''}
       >
         <GrUserManager className="icon" /> Doctors
-      </h4> 
+      </h4>  */}
       
       <h4 onClick={() => {
           props.setCurrentTab(4);
